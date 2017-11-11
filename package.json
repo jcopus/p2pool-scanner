@@ -1,0 +1,19 @@
+{
+  "name": "p2pool-scanner",
+  "version": "1.0.0",
+  "description": "P2Pool Scanner app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcopus/p2pool-scanner.git"
+  },
+  "author": "jacob.w.copus@gmail.com, noahdietz24@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcopus/p2pool-scanner/issues"
+  },
+  "homepage": "https://github.com/jcopus/p2pool-scanner#readme"
+}
