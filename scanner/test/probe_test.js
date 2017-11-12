@@ -1,5 +1,8 @@
 'use strict';
 
+var tmp = require('tmp');
+tmp.setGracefulCleanup();
+
 var probe = require('../prober/probe').probe;
 var ProbeManager = require('../prober/manager').ProbeManager;
 var expect = require('chai').expect;
@@ -87,6 +90,32 @@ describe('probe', function() {
         }
 
         pm.update({}, penaltyTestHelper);
+    });
+
+    it('should store the working node info on update', function(done) {
+      var workingStorage = tmp.fileSync({
+        postfix: '.json',
+        mode: '0666'
+      });
+
+      var pm = new ProbeManager(config.storage.nodes, {
+        workingStoragePath: workingStorage.name
+      });
+
+      pm.update({ storeOnUpdate: true }, function(err) {
+        if (err) {
+          return done(err);
+        }
+
+        try {
+          var working = require(workingStorage.name)
+          expect(working[0]).to.deep.equal(config.storage.nodes[0]);
+        } catch(err) {
+          return done(err);
+        }
+
+        return done();
+      });
     });
   });
 });
