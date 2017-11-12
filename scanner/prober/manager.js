@@ -37,11 +37,7 @@ ProbeManager.prototype.update = function(options, cb) {
   q.drain = function() {
     // flush working list
     if (options.storeOnUpdate) {
-      try {
-        instance.storeWorking()
-      } catch(err) {
-        return cb(err);
-      }
+        return instance.storeWorking(cb)
     }
 
     return cb();
@@ -95,12 +91,12 @@ ProbeManager.prototype.penalizeNode = function(node) {
   }
 };
 
-ProbeManager.prototype.storeWorking = function() {
+ProbeManager.prototype.storeWorking = function(cb) {
   var instance = this;
 
   var working = instance.nodes.filter(function(node) {
     return instance.failed[node.ip] === undefined
   });
 
-  fs.writeFileSync(instance.workingStoragePath, JSON.stringify(working))
+  fs.writeFile(instance.workingStoragePath, JSON.stringify(working), cb)
 }

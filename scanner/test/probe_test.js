@@ -9,7 +9,7 @@ var expect = require('chai').expect;
 var config = require('./testconfig').prober;
 
 describe('probe', function() {
-  describe.skip('probe', function() {
+  describe('probe', function() {
     it('should probe for all target information', function(done) {
       probe(config.success.ip, config.success.port, function(err, info) {
         if (err) {
@@ -38,7 +38,7 @@ describe('probe', function() {
   });
 
   describe('manager', function() {
-    it.skip('should successfully process a list of nodes in series', function(done) {
+    it('should successfully process a list of nodes in series', function(done) {
       var pm = new ProbeManager(config.success.nodes, {});
       pm.update({}, function(err) {
         if (err) {
@@ -49,7 +49,7 @@ describe('probe', function() {
       });
     });
 
-    it.skip('should successfully & concurrently process a list of nodes', function(done) {
+    it('should successfully & concurrently process a list of nodes', function(done) {
       var pm = new ProbeManager(config.success.nodes, {});
       pm.update({concurrency: config.success.concurrency}, function(err) {
         if (err) {
@@ -60,7 +60,7 @@ describe('probe', function() {
       });
     });
 
-    it.skip('should penalize failed node and ignore it until it works', function(done) {
+    it('should penalize failed node and ignore it until it works', function(done) {
         var pm = new ProbeManager(config.failure.nodes, {
           "failurePenalty": 1,
           "failurePenaltyThreshold": 3,
