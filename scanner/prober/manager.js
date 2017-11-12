@@ -2,6 +2,8 @@
 
 var util = require('util');
 var async = require('async');
+var fs = require('fs');
+var join = require('path').join;
 
 var probe = require('./probe').probe;
 
@@ -14,8 +16,8 @@ function ProbeManager(nodes, options) {
   this.failurePenalty = options.failurePenalty ? options.failurePenalty : 2;
   this.failurePenaltyThreshold = options.failurePenaltyThreshold ? options.failurePenaltyThreshold : 10;
   this.failureComeDown = options.failureComedown ? options.failureComedown : 1;
-
   this.debug = options.debug;
+  this.workingStoragePath = options.workingStoragePath ? options.workingStoragePath : join(process.cwd(), 'working-nodes.json');
 }
 
 ProbeManager.prototype.update = function(options, cb) {
@@ -33,7 +35,15 @@ ProbeManager.prototype.update = function(options, cb) {
   }, limit);
 
   q.drain = function() {
-    // might want to flush working list in the background here
+    // flush working list
+    if (options.storeOnUpdate) {
+      try {
+        instance.storeWorking()
+      } catch(err) {
+        return cb(err);
+      }
+    }
+
     return cb();
   }
 
@@ -73,7 +83,7 @@ ProbeManager.prototype.update = function(options, cb) {
   }
 }
 
-ProbeManager.prototype.penalizeNode = function penalizeNode(node) {
+ProbeManager.prototype.penalizeNode = function(node) {
   if (this.failed[node.ip]) {
     this.failed[node.ip].penalty += this.failurePenalty;
     this.failed[node.ip].comedown = this.failed[node.ip].penalty >= this.failurePenaltyThreshold;
@@ -84,3 +94,13 @@ ProbeManager.prototype.penalizeNode = function penalizeNode(node) {
     }
   }
 };
+
+ProbeManager.prototype.storeWorking = function() {
+  var instance = this;
+
+  var working = instance.nodes.filter(function(node) {
+    return instance.failed[node.ip] === undefined
+  });
+
+  fs.writeFileSync(instance.workingStoragePath, JSON.stringify(working))
+}
