@@ -12,7 +12,7 @@ describe('geo SDK tests', function() {
           return done(err);
         }
 
-        expect(location).to.not.be.null;
+        expect(location).to.not.be.undefined;
         expect(location).to.be.a('string');
         expect(location).to.equal('Luxembourg')
         return done();
@@ -25,7 +25,7 @@ describe('geo SDK tests', function() {
           return done(err);
         }
 
-        expect(location).to.not.be.null;
+        expect(location).to.not.be.undefined;
         expect(location).to.be.a('string');
         expect(location).to.equal('Singapore, Singapore')
         return done();

@@ -12,7 +12,7 @@ describe('digest SDK tests', function() {
           return done(err);
         }
 
-        expect(stats).to.not.be.null;
+        expect(stats).to.not.be.undefined;
         return done();
       });
     });
@@ -35,7 +35,7 @@ describe('digest SDK tests', function() {
           return done(err);
         }
 
-        expect(fee).to.not.be.null;
+        expect(fee).to.not.be.undefined;
         return done();
       });
     });
@@ -58,7 +58,7 @@ describe('digest SDK tests', function() {
           return done(err);
         }
 
-        expect(uptime).to.not.be.null;
+        expect(uptime).to.not.be.undefined;
         return done();
       });
     });
@@ -81,7 +81,7 @@ describe('digest SDK tests', function() {
           return done(err);
         }
 
-        expect(globalStats).to.not.be.null;
+        expect(globalStats).to.not.be.undefined;
         return done();
       });
     });
